@@ -16,6 +16,7 @@
         android:layout_marginTop="16dp"
         android:text="AUD"
         android:textStyle="bold"
+        android:textColor="@color/text_value_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,6 +28,7 @@
         android:layout_marginBottom="8dp"
         android:singleLine="false"
         android:text="Австралийский доллар"
+        android:textColor="@color/text_value_color"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toStartOf="@+id/tvValue"
         app:layout_constraintHorizontal_bias="0.0"
@@ -42,6 +44,7 @@
         android:layout_marginEnd="20dp"
         android:text="60.4533"
         android:textStyle="bold"
+        android:textColor="@color/text_value_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

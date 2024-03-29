@@ -15,6 +15,7 @@
         android:singleLine="false"
         android:text="Обновлено: 29.03.2024 в 11:23"
         android:textStyle="bold"
+        android:textColor="@color/text_value_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

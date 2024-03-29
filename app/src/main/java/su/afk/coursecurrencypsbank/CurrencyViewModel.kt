@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -76,7 +75,7 @@ class CurrencyViewModel : ViewModel() {
 
                     // Обновляем текст и цвет для даты
                     updateDateText.postValue("Обновлено: ${formatDate()}")
-                    textColor.postValue(R.color.black)
+                    textColor.postValue(R.color.text_value_color)
 
                 } catch (e: Exception) {
                     // Обновляем текст даты об ошибке и меняем цвет
