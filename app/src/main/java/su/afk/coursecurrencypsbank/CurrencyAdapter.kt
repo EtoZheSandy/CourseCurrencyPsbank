@@ -16,9 +16,8 @@ class CurrencyAdapter(private var currencies: List<Currency>) :
     * создаем и возвращаем новый объект CurrencyViewHolder.
     * */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
-        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
-        val binding = CurrencyItemBinding.inflate(inflater, parent, false)
-        return CurrencyViewHolder(binding.root)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.currency_item, parent, false)
+        return CurrencyViewHolder(view)
     }
 
     /*
