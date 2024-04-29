@@ -1,7 +1,9 @@
 package su.afk.coursecurrencypsbank
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -9,12 +11,17 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import su.afk.coursecurrencypsbank.databinding.ActivityMainBinding
 import su.afk.coursecurrencypsbank.screen.CurrencyAdapter
 import su.afk.coursecurrencypsbank.screen.CurrencyViewModel
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    private val viewModel: CurrencyViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +33,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        val viewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
+//        val viewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
 
         // Создаем адаптер и устанавливаем его для RecyclerView
         val currencyAdapter = CurrencyAdapter(emptyList())
@@ -46,13 +52,9 @@ class MainActivity : AppCompatActivity() {
             binding.tvDateUpdate.text = updateDateText
         })
 
-        // Загрузка данных при создании активити
-        viewModel.loadData()
-
         // Для обновления состояния ProgressBar во время загрузки данных или его скрытия после завершения загрузки
-        viewModel.progressBarVisibility.observe(this, Observer { status ->
-            // Устанавливаем видимость ProgressBar
-            binding.progressBar.visibility = status
+        viewModel.isLoading.observe(this, Observer { status ->
+            binding.progressBar.visibility = if (status == true) View.VISIBLE else View.GONE
         })
 
         // Наблюдаем за цветом текста даты в активити
@@ -61,6 +63,8 @@ class MainActivity : AppCompatActivity() {
             val textColor = ContextCompat.getColor(this, colorResId)
             // Устанавливаем цвет текста в TextView
             binding.tvDateUpdate.setTextColor(textColor)
+
+            //TODO: Добавить кнопку повторить попытку и вызов loadData
         })
     }
 }

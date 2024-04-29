@@ -1,8 +1,10 @@
 package su.afk.coursecurrencypsbank.screen
 
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -12,14 +14,19 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import su.afk.coursecurrencypsbank.R
+import su.afk.coursecurrencypsbank.data.CourceRepository
 import su.afk.coursecurrencypsbank.data.retrofit.ApiService
 import su.afk.coursecurrencypsbank.data.models.Currency
+import su.afk.coursecurrencypsbank.util.Resource
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 
 
-class CurrencyViewModel : ViewModel() {
+@HiltViewModel
+class CurrencyViewModel @Inject constructor(private val repository: CourceRepository)
+    : ViewModel() {
 
     // цвет текста в вверху экрана
     val textColor = MutableLiveData<Int>()
@@ -27,28 +34,11 @@ class CurrencyViewModel : ViewModel() {
     // LiveData, содержащий список валют
     val currencies = MutableLiveData<List<Currency>>()
 
+    // проверка на статус загрузки
+    val isLoading = MutableLiveData(false)
+
     // LiveData, содержащий текст для обновления даты
     val updateDateText = MutableLiveData<String>()
-
-    // Показываем ProgressBar перед загрузкой данных
-    val progressBarVisibility = MutableLiveData<Int>()
-
-    fun getApiService(): ApiService {
-        //для отладки
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.cbr-xml-daily.ru/").client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val apiService = retrofit.create(ApiService::class.java)
-        return apiService
-    }
 
     // функция форматирования времени
     fun formatDate(): String {
@@ -57,37 +47,38 @@ class CurrencyViewModel : ViewModel() {
         return outputFormat.format(currentDate)
     }
 
-
+    init {
+        loadData() //подгряжаем данные при создае ViewModel
+    }
     // Функция для загрузки данных
     fun loadData() {
-        // Показываем ProgressBar перед загрузкой данных
-        progressBarVisibility.postValue(View.VISIBLE)
+        isLoading.value = true
 
         CoroutineScope(Dispatchers.IO).launch {
             while (true) {
-                try {
-                    // Получаем данные с API
-                    val currencyResponse = getApiService().getCurrencyData()
-                    // Получаем список валют из ответа
-                    val currenciesList = currencyResponse.Valute.values.toList()
+                val currencyResponse = repository.getCource() // Получаем данные с API
 
-                    // Обновляем LiveData с новыми данными о валютах
-                    currencies.postValue(currenciesList)
+                when(currencyResponse) { // проверяем возвращаемый тип
+                    is Resource.Success -> {
+                        currencies.postValue(currencyResponse.data?.Valute?.values?.toList())
+                        isLoading.postValue(false) // Обновляем LiveData с новыми данными о валютах
+                        // Обновляем текст и цвет для даты
+                        updateDateText.postValue("Последние данные: ${formatDate()}")
+                        textColor.postValue(R.color.text_value_color)
 
-                    // Обновляем текст и цвет для даты
-                    updateDateText.postValue("Обновлено: ${formatDate()}")
-                    textColor.postValue(R.color.text_value_color)
-
-                } catch (e: Exception) {
-                    // Обновляем текст даты об ошибке и меняем цвет
-                    updateDateText.postValue("Не удалось получить новые данные, попробуйте позднее")
-                    textColor.postValue(R.color.red)
-                } finally {
-                    // После завершения загрузки данных скрываем ProgressBar
-                    progressBarVisibility.postValue(View.GONE)
+//                        // После завершения загрузки данных скрываем ProgressBar
+//                        progressBarVisibility.postValue(View.GONE)
+                    }
+                    is Resource.Error -> {
+                        // Обновляем текст даты об ошибке и меняем цвет
+                        updateDateText.postValue("Не удалось получить новые данные, попробуйте позднее")
+                        textColor.postValue(R.color.red)
+                        isLoading.postValue(false)
+                    }
+                    is Resource.Loading -> {
+                    }
                 }
-                //повторяем каждые 30 секунд
-                delay(30000)
+                delay(30000) //повторяем каждые 30 секунд
             }
         }
     }
