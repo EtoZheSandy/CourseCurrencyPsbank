@@ -1,4 +1,4 @@
-package su.afk.coursecurrencypsbank
+package su.afk.coursecurrencypsbank.screen
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -11,8 +11,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import su.afk.coursecurrencypsbank.retrofit.ApiService
-import su.afk.coursecurrencypsbank.retrofit.Currency
+import su.afk.coursecurrencypsbank.R
+import su.afk.coursecurrencypsbank.data.retrofit.ApiService
+import su.afk.coursecurrencypsbank.data.models.Currency
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

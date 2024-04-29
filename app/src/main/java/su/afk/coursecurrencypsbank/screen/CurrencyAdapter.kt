@@ -1,11 +1,12 @@
-package su.afk.coursecurrencypsbank
+package su.afk.coursecurrencypsbank.screen
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import su.afk.coursecurrencypsbank.R
 import su.afk.coursecurrencypsbank.databinding.CurrencyItemBinding
-import su.afk.coursecurrencypsbank.retrofit.Currency
+import su.afk.coursecurrencypsbank.data.models.Currency
 
 class CurrencyAdapter(private var currencies: List<Currency>) :
     RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {

@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import su.afk.coursecurrencypsbank.databinding.ActivityMainBinding
+import su.afk.coursecurrencypsbank.screen.CurrencyAdapter
+import su.afk.coursecurrencypsbank.screen.CurrencyViewModel
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding

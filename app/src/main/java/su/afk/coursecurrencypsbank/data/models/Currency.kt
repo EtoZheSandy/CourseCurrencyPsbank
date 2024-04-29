@@ -1,4 +1,4 @@
-package su.afk.coursecurrencypsbank.retrofit
+package su.afk.coursecurrencypsbank.data.models
 
 data class Currency(
     val ID: String,
