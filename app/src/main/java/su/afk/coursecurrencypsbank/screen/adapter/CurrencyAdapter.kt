@@ -1,4 +1,4 @@
-package su.afk.coursecurrencypsbank.screen
+package su.afk.coursecurrencypsbank.screen.adapter
 
 import android.view.LayoutInflater
 import android.view.View

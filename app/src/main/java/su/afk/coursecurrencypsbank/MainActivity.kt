@@ -5,17 +5,14 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import su.afk.coursecurrencypsbank.databinding.ActivityMainBinding
-import su.afk.coursecurrencypsbank.screen.CurrencyAdapter
 import su.afk.coursecurrencypsbank.screen.CurrencyViewModel
-import javax.inject.Inject
+import su.afk.coursecurrencypsbank.screen.adapter.CurrencyAdapter
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -48,23 +45,16 @@ class MainActivity : AppCompatActivity() {
 
         // Наблюдаем за текстом для обновления даты
         viewModel.updateDateText.observe(this, Observer { updateDateText ->
-            // Обновляем текст в TextView
-            binding.tvDateUpdate.text = updateDateText
+            binding.tvDateUpdate.text = updateDateText.date// Обновляем текст в TextView
+            // Получаем цвет из ресурсов
+//            val textColor = ContextCompat.getColor(this, colorResId)
+            binding.tvDateUpdate.setTextColor(updateDateText.colorText) // Устанавливаем цвет текста в TextView
+
         })
 
         // Для обновления состояния ProgressBar во время загрузки данных или его скрытия после завершения загрузки
         viewModel.isLoading.observe(this, Observer { status ->
             binding.progressBar.visibility = if (status == true) View.VISIBLE else View.GONE
-        })
-
-        // Наблюдаем за цветом текста даты в активити
-        viewModel.textColor.observe(this, Observer { colorResId ->
-            // Получаем цвет из ресурсов
-            val textColor = ContextCompat.getColor(this, colorResId)
-            // Устанавливаем цвет текста в TextView
-            binding.tvDateUpdate.setTextColor(textColor)
-
-            //TODO: Добавить кнопку повторить попытку и вызов loadData
         })
     }
 }
