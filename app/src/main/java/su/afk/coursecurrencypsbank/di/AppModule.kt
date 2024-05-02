@@ -16,7 +16,6 @@ object AppModule {
 
     @Singleton
     @Provides
-//    fun provideRepositoryCource(api: ApiCocktail) = CourceRepository(api)
     fun provideRepositoryCource(api: ApiService): CourceRepository {
         return CourceRepository(api)
     }

@@ -39,17 +39,13 @@ class MainActivity : AppCompatActivity() {
 
         // Наблюдаем за списком валют
         viewModel.currencies.observe(this, Observer { currencies ->
-            // Обновляем данные в адаптере
-            currencyAdapter.updateData(currencies)
+            currencyAdapter.updateData(currencies) // Обновляем данные в адаптере
         })
 
         // Наблюдаем за текстом для обновления даты
         viewModel.updateDateText.observe(this, Observer { updateDateText ->
             binding.tvDateUpdate.text = updateDateText.date// Обновляем текст в TextView
-            // Получаем цвет из ресурсов
-//            val textColor = ContextCompat.getColor(this, colorResId)
             binding.tvDateUpdate.setTextColor(updateDateText.colorText) // Устанавливаем цвет текста в TextView
-
         })
 
         // Для обновления состояния ProgressBar во время загрузки данных или его скрытия после завершения загрузки

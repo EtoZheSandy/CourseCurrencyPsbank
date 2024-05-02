@@ -36,7 +36,7 @@ class CurrencyViewModel @Inject constructor(private val repository: CourceReposi
     }
 
     init {
-        loadData() //подгряжаем данные при создае ViewModel
+        loadData() //подгружаем данные при создание ViewModel
     }
 
     // Функция для загрузки данных
