@@ -15,5 +15,5 @@
 - Обязательно использовать: Kotlin, XML, Android SDK min api 24, Retrofit2, gson
 
 <p float="left">
-  <img src="./gitDock/one.png" width="30%" />
+  <img src="./gitDock/one.jpg" width="30%" />
 </p>
